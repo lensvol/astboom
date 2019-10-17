@@ -1,5 +1,6 @@
 import ast
 from collections import OrderedDict
+from itertools import chain
 
 import click
 from asciitree import LeftAligned
@@ -15,6 +16,8 @@ def class_name(value):
 def traverse(node):
     result = OrderedDict()
 
+    simple_attrs, list_attrs, object_attrs = [], [], []
+
     if hasattr(node, "lineno"):
         result["lineno: " + str(node.lineno)] = {}
         result["col_offset: " + str(node.col_offset)] = {}
@@ -24,19 +27,24 @@ def traverse(node):
             continue
 
         if isinstance(value, ast.AST):
-            result[attr] = {class_name(value): traverse(value)}
+            object_attrs.append((attr, {class_name(value): traverse(value)}))
         elif isinstance(value, list):
-            result[attr] = {
+            traversed_items = {
                 "[{0}] {1}".format(i, class_name(item)): traverse(item)
                 for i, item in enumerate(value)
             }
+            list_attrs.append((attr, traversed_items))
         elif isinstance(value, dict):
-            result[attr] = {
+            traversed_items = {
                 "[{0}] {1}".format(key, class_name(value[key])): traverse(value[key])
                 for key in value.keys()
             }
+            list_attrs.append((attr, traversed_items))
         else:
-            result[attr + ": " + str(value)] = {}
+            simple_attrs.append((attr + ": " + str(value), {}))
+
+    for attr, value in chain(simple_attrs, list_attrs, object_attrs):
+        result[attr] = value
 
     return result
 
