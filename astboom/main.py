@@ -54,7 +54,7 @@ def traverse(node):
 def cli(source_file):
     module = ast.parse(source_file.read())
 
-    print(box_tr({module.__class__.__name__: traverse(module)}))
+    print(box_tr({class_name(module): traverse(module)}))
 
 
 if __name__ == "__main__":
