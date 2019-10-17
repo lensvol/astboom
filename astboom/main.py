@@ -15,12 +15,12 @@ def class_name(value):
 def traverse(node):
     result = OrderedDict()
 
-    if hasattr(node, 'lineno'):
-        result['lineno: ' + str(node.lineno)] = {}
-        result['col_offset: ' + str(node.col_offset)] = {}
+    if hasattr(node, "lineno"):
+        result["lineno: " + str(node.lineno)] = {}
+        result["col_offset: " + str(node.col_offset)] = {}
 
     for attr, value in sorted(node.__dict__.items(), key=lambda p: p[0]):
-        if attr in ('lineno', 'col_offset'):
+        if attr in ("lineno", "col_offset"):
             continue
 
         if isinstance(value, ast.AST):
