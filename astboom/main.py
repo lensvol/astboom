@@ -14,12 +14,12 @@ def class_name(value):
     return "<{0}.{1}>".format(value.__class__.__module__, value.__class__.__name__)
 
 
-def traverse(node):
+def traverse(node, show_pos=True):
     result = OrderedDict()
 
     simple_attrs, list_attrs, object_attrs = [], [], []
 
-    if hasattr(node, "lineno"):
+    if hasattr(node, "lineno") and not show_pos:
         result["lineno: " + str(node.lineno)] = {}
         result["col_offset: " + str(node.col_offset)] = {}
 
@@ -28,16 +28,22 @@ def traverse(node):
             continue
 
         if isinstance(value, ast.AST):
-            object_attrs.append((attr, {class_name(value): traverse(value)}))
+            object_attrs.append(
+                (attr, {class_name(value): traverse(value, show_pos=show_pos)})
+            )
         elif isinstance(value, list):
             traversed_items = {
-                "[{0}] {1}".format(i, class_name(item)): traverse(item)
+                "[{0}] {1}".format(i, class_name(item)): traverse(
+                    item, show_pos=show_pos
+                )
                 for i, item in enumerate(value)
             }
             list_attrs.append((attr, traversed_items))
         elif isinstance(value, dict):
             traversed_items = {
-                "[{0}] {1}".format(key, class_name(value[key])): traverse(value[key])
+                "[{0}] {1}".format(key, class_name(value[key])): traverse(
+                    value[key], show_pos=show_pos
+                )
                 for key in value.keys()
             }
             list_attrs.append((attr, traversed_items))
@@ -52,7 +58,8 @@ def traverse(node):
 
 @click.command()
 @click.argument("source", nargs=1, required=False)
-def cli(source):
+@click.option("--no-pos/--pos", "show_pos", default=False)
+def cli(source, show_pos):
     if source is None:
         print("Failed to read source from command line, trying to read it from STDIN:")
         print("=" * 72)
@@ -66,7 +73,8 @@ def cli(source):
 
     module = ast.parse(source)
 
-    print(box_tr({class_name(module): traverse(module)}))
+    source_tree = {class_name(module): traverse(module, show_pos=show_pos)}
+    print(box_tr(source_tree))
 
 
 if __name__ == "__main__":
