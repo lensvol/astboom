@@ -1,4 +1,5 @@
 import ast
+import sys
 from collections import OrderedDict
 from itertools import chain
 
@@ -50,8 +51,19 @@ def traverse(node):
 
 
 @click.command()
-@click.argument("source", nargs=1)
+@click.argument("source", nargs=1, required=False)
 def cli(source):
+    if source is None:
+        print("Failed to read source from command line, trying to read it from STDIN:")
+        print("=" * 72)
+
+        source = sys.stdin.read()
+
+        print("")
+        print(source)
+        print("=" * 72, "")
+        print()
+
     module = ast.parse(source)
 
     print(box_tr({class_name(module): traverse(module)}))
