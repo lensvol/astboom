@@ -50,9 +50,9 @@ def traverse(node):
 
 
 @click.command()
-@click.argument("source_file", type=click.File("r"))
-def cli(source_file):
-    module = ast.parse(source_file.read())
+@click.argument("source", nargs=1)
+def cli(source):
+    module = ast.parse(source)
 
     print(box_tr({class_name(module): traverse(module)}))
 
