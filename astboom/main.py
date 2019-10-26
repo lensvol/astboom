@@ -14,12 +14,12 @@ def class_name(value):
     return "<{0}.{1}>".format(value.__class__.__module__, value.__class__.__name__)
 
 
-def traverse(node, show_pos=True):
+def traverse(node, hide_pos=True):
     result = OrderedDict()
 
     simple_attrs, list_attrs, object_attrs = [], [], []
 
-    if hasattr(node, "lineno") and not show_pos:
+    if hasattr(node, "lineno") and not hide_pos:
         result["lineno: " + str(node.lineno)] = {}
         result["col_offset: " + str(node.col_offset)] = {}
 
@@ -29,12 +29,12 @@ def traverse(node, show_pos=True):
 
         if isinstance(value, ast.AST):
             object_attrs.append(
-                (attr, {class_name(value): traverse(value, show_pos=show_pos)})
+                (attr, {class_name(value): traverse(value, hide_pos=hide_pos)})
             )
         elif isinstance(value, list):
             traversed_items = {
                 "[{0}] {1}".format(i, class_name(item)): traverse(
-                    item, show_pos=show_pos
+                    item, hide_pos=hide_pos
                 )
                 for i, item in enumerate(value)
             }
@@ -42,7 +42,7 @@ def traverse(node, show_pos=True):
         elif isinstance(value, dict):
             traversed_items = {
                 "[{0}] {1}".format(key, class_name(value[key])): traverse(
-                    value[key], show_pos=show_pos
+                    value[key], hide_pos=hide_pos
                 )
                 for key in value.keys()
             }
@@ -58,8 +58,14 @@ def traverse(node, show_pos=True):
 
 @click.command()
 @click.argument("source", nargs=1, required=False)
-@click.option("--no-pos/--pos", "show_pos", default=False)
-def cli(source, show_pos):
+@click.option(
+    "--no-pos",
+    "hide_pos",
+    is_flag=True,
+    help="Hide 'col_offset' and 'lineno' fields.",
+    default=False,
+)
+def cli(source, hide_pos):
     if source is None:
         print("Failed to read source from command line, trying to read it from STDIN:")
         print("=" * 72)
@@ -73,7 +79,7 @@ def cli(source, show_pos):
 
     module = ast.parse(source)
 
-    source_tree = {class_name(module): traverse(module, show_pos=show_pos)}
+    source_tree = {class_name(module): traverse(module, hide_pos=hide_pos)}
     print(box_tr(source_tree))
 
 
