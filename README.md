@@ -1,4 +1,4 @@
-# tokelor
+# astboom
 
 Visualize Python AST in console using ASCII graphics.
 
