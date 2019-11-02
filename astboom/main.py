@@ -38,7 +38,12 @@ def traverse(node, hide_pos=True):
                 )
                 for i, item in enumerate(value)
             }
-            list_attrs.append((attr, traversed_items))
+            if traversed_items:
+                list_attrs.append((attr, traversed_items))
+            else:
+                # Moving empty lists to the beginning of the list
+                # helps to prevent breaking up visual consistency.
+                list_attrs.insert(0, (attr + ": []", {}))
         elif isinstance(value, dict):
             traversed_items = {
                 "[{0}] {1}".format(key, class_name(value[key])): traverse(
