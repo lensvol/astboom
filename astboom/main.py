@@ -7,11 +7,16 @@ import click
 from asciitree import LeftAligned
 from asciitree.drawing import BOX_HEAVY, BoxStyle
 
+SOURCE_READ_PROMPT = (
+    "Failed to read source from command line, trying to read it from STDIN:"
+)
+
 box_tr = LeftAligned(draw=BoxStyle(gfx=BOX_HEAVY, horiz_len=1, indent=2))
 
 
 def class_name(value):
-    return "<{0}.{1}>".format(value.__class__.__module__, value.__class__.__name__)
+    value_cls = value.__class__
+    return "<{0}.{1}>".format(value_cls.__module__, value_cls.__name__)
 
 
 def traverse(node, hide_pos=True):
@@ -20,8 +25,8 @@ def traverse(node, hide_pos=True):
     simple_attrs, list_attrs, object_attrs = [], [], []
 
     if hasattr(node, "lineno") and not hide_pos:
-        result["lineno: " + str(node.lineno)] = {}
-        result["col_offset: " + str(node.col_offset)] = {}
+        result[f"lineno: {node.lineno}"] = {}
+        result[f"col_offset: {node.col_offset}"] = {}
 
     for attr, value in sorted(node.__dict__.items(), key=lambda p: p[0]):
         if attr in ("lineno", "col_offset"):
@@ -33,9 +38,7 @@ def traverse(node, hide_pos=True):
             )
         elif isinstance(value, list):
             traversed_items = {
-                "[{0}] {1}".format(i, class_name(item)): traverse(
-                    item, hide_pos=hide_pos
-                )
+                f"[{i}] {class_name(item)}": traverse(item, hide_pos=hide_pos)
                 for i, item in enumerate(value)
             }
             if traversed_items:
@@ -43,17 +46,17 @@ def traverse(node, hide_pos=True):
             else:
                 # Moving empty lists to the beginning of the list
                 # helps to prevent breaking up visual consistency.
-                list_attrs.insert(0, (attr + ": []", {}))
+                list_attrs.insert(0, (f"{attr}: []", {}))
         elif isinstance(value, dict):
             traversed_items = {
-                "[{0}] {1}".format(key, class_name(value[key])): traverse(
+                f"[{key}] {class_name(value[key])}": traverse(
                     value[key], hide_pos=hide_pos
                 )
                 for key in value.keys()
             }
             list_attrs.append((attr, traversed_items))
         else:
-            simple_attrs.append((attr + ": " + str(value), {}))
+            simple_attrs.append((f"{attr}: {value}", {}))
 
     for attr, value in chain(simple_attrs, list_attrs, object_attrs):
         result[attr] = value
@@ -72,7 +75,7 @@ def traverse(node, hide_pos=True):
 )
 def cli(source, hide_pos):
     if source is None:
-        print("Failed to read source from command line, trying to read it from STDIN:")
+        print(SOURCE_READ_PROMPT)
         print("=" * 72)
 
         source = sys.stdin.read()
