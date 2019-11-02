@@ -2,17 +2,16 @@ import ast
 from collections import OrderedDict
 from itertools import chain
 
+from astboom.visualizers.base import BaseVisualizer
+
 
 def class_name(value):
     value_cls = value.__class__
     return "<{0}.{1}>".format(value_cls.__module__, value_cls.__name__)
 
 
-class VisualizeAST(object):
-    def __init__(self, options):
-        self.options = options
-
-    def traverse(self, node):
+class VisualizeAST(BaseVisualizer):
+    def _traverse(self, node):
         result = OrderedDict()
 
         simple_attrs, list_attrs, object_attrs = [], [], []
@@ -26,10 +25,10 @@ class VisualizeAST(object):
                 continue
 
             if isinstance(value, ast.AST):
-                object_attrs += [(attr, {class_name(value): self.traverse(value)})]
+                object_attrs += [(attr, {class_name(value): self._traverse(value)})]
             elif isinstance(value, list):
                 traversed_items = {
-                    f"[{i}] {class_name(item)}": self.traverse(item)
+                    f"[{i}] {class_name(item)}": self._traverse(item)
                     for i, item in enumerate(value)
                 }
                 if traversed_items:
@@ -40,7 +39,7 @@ class VisualizeAST(object):
                     list_attrs.insert(0, (f"{attr}: []", {}))
             elif isinstance(value, dict):
                 traversed_items = {
-                    f"[{key}] {class_name(value[key])}": self.traverse(value[key])
+                    f"[{key}] {class_name(value[key])}": self._traverse(value[key])
                     for key in value.keys()
                 }
                 list_attrs += [(attr, traversed_items)]
@@ -54,4 +53,4 @@ class VisualizeAST(object):
 
     def process(self, source):
         module = ast.parse(source)
-        return {class_name(module): self.traverse(module)}
+        return {class_name(module): self._traverse(module)}
