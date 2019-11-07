@@ -1,5 +1,5 @@
 # astboom
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/astboom) ![PyPI - Format](https://img.shields.io/pypi/format/astboom) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![PyPI](https://img.shields.io/pypi/v/astboom) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/astboom) ![PyPI - Format](https://img.shields.io/pypi/format/astboom) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Visualize Python AST/CST in console using ASCII graphics.
 
