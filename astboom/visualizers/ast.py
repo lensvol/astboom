@@ -25,7 +25,9 @@ class VisualizeAST(BaseVisualizer):
                 continue
 
             if isinstance(value, ast.AST):
-                object_attrs += [(attr, {class_name(value): self._traverse(value)})]
+                object_attrs += [
+                    (f"{attr}: {class_name(value)}", self._traverse(value))
+                ]
             elif isinstance(value, list):
                 traversed_items = {
                     f"[{i}] {class_name(item)}": self._traverse(item)
