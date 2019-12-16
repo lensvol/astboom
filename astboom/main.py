@@ -42,8 +42,6 @@ def cli(source, show_ast, engine, hide_pos):
 
         source = sys.stdin.read()
 
-        print("")
-        print(source)
         print("=" * 72, "")
         print()
 
