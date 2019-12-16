@@ -17,10 +17,16 @@ box_tr = LeftAligned(draw=BoxStyle(gfx=BOX_HEAVY, horiz_len=1, indent=2))
 @click.command()
 @click.argument("source", nargs=1, required=False)
 @click.option(
+    "--engine",
+    type=click.Choice(["AST", "CST"], case_sensitive=False),
+    default=None,
+    help="Display source code using selected engine.",
+)
+@click.option(
     "--ast/--cst",
     "show_ast",
     default=True,
-    help="Display source code as AST or CST (default: AST).",
+    help="Display source code as AST or CST (default: AST) [deprecated].",
 )
 @click.option(
     "--no-pos",
@@ -29,7 +35,7 @@ box_tr = LeftAligned(draw=BoxStyle(gfx=BOX_HEAVY, horiz_len=1, indent=2))
     help="Hide 'col_offset' and 'lineno' fields.",
     default=False,
 )
-def cli(source, show_ast, hide_pos):
+def cli(source, show_ast, engine, hide_pos):
     if source is None:
         print(SOURCE_READ_PROMPT)
         print("=" * 72)
@@ -41,7 +47,7 @@ def cli(source, show_ast, hide_pos):
         print("=" * 72, "")
         print()
 
-    if show_ast:
+    if (not engine and show_ast) or engine == "ast":
         engine = VisualizeAST({"hide_pos": hide_pos})
     else:
         engine = VisualizeCST()
