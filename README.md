@@ -22,9 +22,12 @@ and a corresponding AST/CST will be displayed.
 Usage: astboom [OPTIONS] [SOURCE]
 
 Options:
-  --ast / --cst  Display source code as AST or CST (default: AST).
-  --no-pos  Hide 'col_offset' and 'lineno' fields.
-  --help    Show this message and exit.
+  --engine [AST|CST]  Display source code using selected engine.
+  --ast / --cst       Display source code as AST or CST (default: AST)
+                      [deprecated].
+  --no-pos            Hide 'col_offset' and 'lineno' fields.
+  --hide-empty        Hide empty fields.
+  --help              Show this message and exit.
 ```
 
 If no source provided as an argument, then tool will attempt to read it
