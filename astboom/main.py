@@ -35,7 +35,14 @@ box_tr = LeftAligned(draw=BoxStyle(gfx=BOX_HEAVY, horiz_len=1, indent=2))
     help="Hide 'col_offset' and 'lineno' fields.",
     default=False,
 )
-def cli(source, show_ast, engine, hide_pos):
+@click.option(
+    "--hide-empty",
+    "hide_empty",
+    is_flag=True,
+    help="Hide empty fields.",
+    default=False,
+)
+def cli(source, show_ast, engine, hide_pos, hide_empty):
     if source is None:
         print(SOURCE_READ_PROMPT)
         print("=" * 72)
@@ -46,7 +53,7 @@ def cli(source, show_ast, engine, hide_pos):
         print()
 
     if (not engine and show_ast) or engine == "ast":
-        engine = VisualizeAST({"hide_pos": hide_pos})
+        engine = VisualizeAST({"hide_pos": hide_pos, "hide_empty": hide_empty})
     else:
         engine = VisualizeCST()
 

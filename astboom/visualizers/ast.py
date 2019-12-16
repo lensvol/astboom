@@ -15,13 +15,18 @@ class VisualizeAST(BaseVisualizer):
         result = OrderedDict()
 
         simple_attrs, list_attrs, object_attrs = [], [], []
+        hide_pos = self.options.get("hide_pos", False)
+        hide_empty = self.options.get("hide_empty", False)
 
-        if hasattr(node, "lineno") and not self.options.get("hide_pos", False):
+        if hasattr(node, "lineno") and not hide_pos:
             result[f"lineno: {node.lineno}"] = {}
             result[f"col_offset: {node.col_offset}"] = {}
 
         for attr, value in sorted(node.__dict__.items(), key=lambda p: p[0]):
             if attr in ("lineno", "col_offset"):
+                continue
+
+            if not value and hide_empty:
                 continue
 
             if isinstance(value, ast.AST):
