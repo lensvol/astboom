@@ -18,16 +18,19 @@ Simply provide a valid Python source code string as an argument
 and a corresponding AST/CST will be displayed.
 
 ```
-# astboom --help
-Usage: astboom [OPTIONS] [SOURCE]
+Usage: astboom ast [OPTIONS] [SOURCE]
 
 Options:
-  --engine [AST|CST]  Display source code using selected engine.
-  --ast / --cst       Display source code as AST or CST (default: AST)
-                      [deprecated].
-  --no-pos            Hide 'col_offset' and 'lineno' fields.
-  --hide-empty        Hide empty fields.
-  --help              Show this message and exit.
+  --no-pos      Hide 'col_offset' and 'lineno' fields.
+  --hide-empty  Hide empty fields.
+  --help        Show this message and exit.
+```
+
+```
+Usage: astboom cst [OPTIONS] [SOURCE]
+
+Options:
+  --help  Show this message and exit.
 ```
 
 If no source provided as an argument, then tool will attempt to read it
