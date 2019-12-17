@@ -2,7 +2,7 @@ import sys
 
 import click
 from asciitree import LeftAligned
-from asciitree.drawing import BOX_HEAVY, BoxStyle
+from asciitree.drawing import BoxStyle, BOX_LIGHT
 
 from astboom.visualizers.ast import VisualizeAST
 from astboom.visualizers.cst import VisualizeCST
@@ -11,7 +11,7 @@ SOURCE_READ_PROMPT = (
     "Failed to read source from command line, trying to read it from STDIN:"
 )
 
-box_tr = LeftAligned(draw=BoxStyle(gfx=BOX_HEAVY, horiz_len=1, indent=2))
+box_tr = LeftAligned(draw=BoxStyle(gfx=BOX_LIGHT, horiz_len=1, indent=2))
 
 
 @click.group()
