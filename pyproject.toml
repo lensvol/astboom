@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "astboom"
-version = "0.2.2"
+version = "0.3.0"
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/lensvol/astboom"
