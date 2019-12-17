@@ -43,11 +43,7 @@ def show_tree(source, engine):
     default=False,
 )
 @click.option(
-    "--hide-empty",
-    "hide_empty",
-    is_flag=True,
-    help="Hide empty fields.",
-    default=False,
+    "--hide-empty", "hide_empty", is_flag=True, help="Hide empty fields.", default=False
 )
 def ast(source, hide_pos, hide_empty):
     ast_visualizer = VisualizeAST({"hide_pos": hide_pos, "hide_empty": hide_empty})
