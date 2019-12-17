@@ -14,20 +14,27 @@ SOURCE_READ_PROMPT = (
 box_tr = LeftAligned(draw=BoxStyle(gfx=BOX_HEAVY, horiz_len=1, indent=2))
 
 
-@click.command()
+@click.group()
+def cli():
+    pass
+
+
+def show_tree(source, engine):
+    if source is None:
+        print(SOURCE_READ_PROMPT)
+        print("=" * 72)
+
+        source = sys.stdin.read()
+
+        print("=" * 72, "")
+        print()
+
+    source_tree = engine.process(source)
+    print(box_tr(source_tree))
+
+
+@cli.command()
 @click.argument("source", nargs=1, required=False)
-@click.option(
-    "--engine",
-    type=click.Choice(["AST", "CST"], case_sensitive=False),
-    default=None,
-    help="Display source code using selected engine.",
-)
-@click.option(
-    "--ast/--cst",
-    "show_ast",
-    default=True,
-    help="Display source code as AST or CST (default: AST) [deprecated].",
-)
 @click.option(
     "--no-pos",
     "hide_pos",
@@ -42,23 +49,15 @@ box_tr = LeftAligned(draw=BoxStyle(gfx=BOX_HEAVY, horiz_len=1, indent=2))
     help="Hide empty fields.",
     default=False,
 )
-def cli(source, show_ast, engine, hide_pos, hide_empty):
-    if source is None:
-        print(SOURCE_READ_PROMPT)
-        print("=" * 72)
+def ast(source, hide_pos, hide_empty):
+    ast_visualizer = VisualizeAST({"hide_pos": hide_pos, "hide_empty": hide_empty})
+    show_tree(source, ast_visualizer)
 
-        source = sys.stdin.read()
 
-        print("=" * 72, "")
-        print()
-
-    if (not engine and show_ast) or engine == "ast":
-        engine = VisualizeAST({"hide_pos": hide_pos, "hide_empty": hide_empty})
-    else:
-        engine = VisualizeCST()
-
-    source_tree = engine.process(source)
-    print(box_tr(source_tree))
+@cli.command()
+@click.argument("source", nargs=1, required=False)
+def cst(source):
+    show_tree(source, VisualizeCST())
 
 
 if __name__ == "__main__":
