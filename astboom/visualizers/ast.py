@@ -51,7 +51,7 @@ class VisualizeAST(BaseVisualizer):
                 }
                 list_attrs += [(attr, traversed_items)]
             else:
-                simple_attrs += [(f"{attr}: {value}", {})]
+                simple_attrs += [(f"{attr}: {repr(value)}", {})]
 
         for attr, value in chain(simple_attrs, list_attrs, object_attrs):
             result[attr] = value
