@@ -47,6 +47,7 @@ def show_tree(source, engine):
     "--hide-empty", "hide_empty", is_flag=True, help="Hide empty fields.", default=False
 )
 def ast(source, hide_pos, hide_empty):
+    """Display Abstract Syntax Tree for a given source."""
     ast_visualizer = VisualizeAST({"hide_pos": hide_pos, "hide_empty": hide_empty})
     show_tree(source, ast_visualizer)
 
@@ -54,12 +55,14 @@ def ast(source, hide_pos, hide_empty):
 @cli.command()
 @click.argument("source", nargs=1, required=False)
 def cst(source):
+    """Display Concrete Source Tree for a given source."""
     show_tree(source, VisualizeCST())
 
 
 @cli.command()
 @click.argument("source", nargs=1, required=False)
 def st(source):
+    """Display parse tree for a given source."""
     show_tree(source, VisualizeST())
 
 

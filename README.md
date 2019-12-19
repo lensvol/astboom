@@ -20,6 +20,8 @@ and a corresponding AST/CST will be displayed.
 ```
 Usage: astboom ast [OPTIONS] [SOURCE]
 
+  Display Abstract Syntax Tree for a given source.
+
 Options:
   --no-pos      Hide 'col_offset' and 'lineno' fields.
   --hide-empty  Hide empty fields.
@@ -28,6 +30,17 @@ Options:
 
 ```
 Usage: astboom cst [OPTIONS] [SOURCE]
+
+  Display Concrete Source Tree for a given source.
+
+Options:
+  --help  Show this message and exit.
+```
+
+```
+Usage: astboom st [OPTIONS] [SOURCE]
+
+  Display parse tree for a given source.
 
 Options:
   --help  Show this message and exit.
