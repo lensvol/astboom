@@ -3,17 +3,7 @@ from lib2to3.pgen2 import driver, token
 from lib2to3.pytree import Node, type_repr
 
 from astboom.visualizers.base import BaseVisualizer
-
-
-class DictLikeList(object):
-    def __init__(self):
-        self.__contained = []
-
-    def __setitem__(self, key, value):
-        self.__contained.append((key, value))
-
-    def items(self):
-        return self.__contained
+from astboom.visualizers.utils import DictLikeList
 
 
 class VisualizeCST(BaseVisualizer):

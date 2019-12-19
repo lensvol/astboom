@@ -6,6 +6,7 @@ from asciitree.drawing import BoxStyle, BOX_LIGHT
 
 from astboom.visualizers.ast import VisualizeAST
 from astboom.visualizers.cst import VisualizeCST
+from astboom.visualizers.st import VisualizeST
 
 SOURCE_READ_PROMPT = (
     "Failed to read source from command line, trying to read it from STDIN:"
@@ -54,6 +55,12 @@ def ast(source, hide_pos, hide_empty):
 @click.argument("source", nargs=1, required=False)
 def cst(source):
     show_tree(source, VisualizeCST())
+
+
+@cli.command()
+@click.argument("source", nargs=1, required=False)
+def st(source):
+    show_tree(source, VisualizeST())
 
 
 if __name__ == "__main__":
