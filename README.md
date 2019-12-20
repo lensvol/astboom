@@ -15,7 +15,7 @@ AST is displayed as provided by standard `ast` module, CST is displayed as provi
 ## Usage
 
 Simply provide a valid Python source code string as an argument
-and a corresponding AST/CST will be displayed.
+and a corresponding AST/CST/ST will be displayed.
 
 ```
 Usage: astboom ast [OPTIONS] [SOURCE]
