@@ -34,7 +34,8 @@ Usage: astboom cst [OPTIONS] [SOURCE]
   Display Concrete Source Tree for a given source.
 
 Options:
-  --help  Show this message and exit.
+  --show-prefix  Display value stored in 'prefix' field of the node.
+  --help         Show this message and exit.
 ```
 
 ```

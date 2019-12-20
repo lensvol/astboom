@@ -54,9 +54,16 @@ def ast(source, hide_pos, hide_empty):
 
 @cli.command()
 @click.argument("source", nargs=1, required=False)
-def cst(source):
+@click.option(
+    "--show-prefix",
+    "show_prefix",
+    is_flag=True,
+    help="Display value stored in 'prefix' field of the node.",
+    default=False,
+)
+def cst(source, show_prefix):
     """Display Concrete Source Tree for a given source."""
-    show_tree(source, VisualizeCST())
+    show_tree(source, VisualizeCST({"show_prefix": show_prefix}))
 
 
 @cli.command()

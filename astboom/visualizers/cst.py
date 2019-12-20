@@ -14,8 +14,11 @@ class VisualizeCST(BaseVisualizer):
             if isinstance(child, Node):
                 result[type_repr(child.type)] = self._traverse(child)
             else:
-                result[f"{token.tok_name[child.type]}: {repr(child.value)}"] = {}
-
+                if self.options["show_prefix"]:
+                    value = f"{repr(child.prefix)} {repr(child.value)}"
+                else:
+                    value = f"{repr(child.value)}"
+                result[f"{token.tok_name[child.type]}: {value}"] = {}
         return result
 
     def process(self, source):
