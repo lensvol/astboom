@@ -4,7 +4,7 @@
 ![GitHub](https://img.shields.io/github/license/lensvol/astboom)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Visualize Python AST/CST in console using ASCII graphics.
+Visualize Python AST/CST/ST in console using ASCII graphics.
 
 AST is displayed as provided by standard `ast` module, CST is displayed as provided by `lib2to3`.
 
