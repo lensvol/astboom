@@ -47,6 +47,17 @@ Options:
   --help  Show this message and exit.
 ```
 
+```
+Usage: astboom libcst [OPTIONS] [SOURCE]
+
+  Display parse tree for a given source.
+
+Options:
+  --hide-default  Hide fields that contain default value
+                  (MaybeSentinel.DEFAULT).
+  --help          Show this message and exit.
+```
+
 If no source provided as an argument, then tool will attempt to read it
 from *STDIN*.
 
