@@ -2,6 +2,8 @@ import inspect
 from collections import OrderedDict
 from itertools import chain
 
+from libcst import MaybeSentinel
+
 from astboom.visualizers.base import BaseVisualizer
 import libcst as cst
 
@@ -46,6 +48,9 @@ class VisualizeLibCST(BaseVisualizer):
                 }
                 list_attrs += [(attr, traversed_items)]
             else:
+                if self.options["hide_default"] and value is MaybeSentinel.DEFAULT:
+                    continue
+
                 simple_attrs += [(f"{attr}: {repr(value)}", {})]
 
         for attr, value in chain(simple_attrs, list_attrs, object_attrs):

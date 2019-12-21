@@ -76,9 +76,16 @@ def st(source):
 
 @cli.command()
 @click.argument("source", nargs=1, required=False)
-def libcst(source):
+@click.option(
+    "--hide-default",
+    "hide_default",
+    is_flag=True,
+    help="Hide fields that contain default value (MaybeSentinel.DEFAULT).",
+    default=False,
+)
+def libcst(source, hide_default):
     """Display parse tree for a given source."""
-    show_tree(source, VisualizeLibCST())
+    show_tree(source, VisualizeLibCST({"hide_default": hide_default}))
 
 
 if __name__ == "__main__":
