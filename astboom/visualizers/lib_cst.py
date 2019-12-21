@@ -26,6 +26,11 @@ class VisualizeLibCST(BaseVisualizer):
             if callable(value):
                 continue
 
+            if self.options["hide_empty"] and (
+                value in [[], (), "", None] or attr == "empty"
+            ):
+                continue
+
             if isinstance(value, cst.CSTNode):
                 object_attrs += [
                     (f"{attr}: {class_name(value)}", self._traverse(value))

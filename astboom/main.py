@@ -83,9 +83,19 @@ def st(source):
     help="Hide fields that contain default value (MaybeSentinel.DEFAULT).",
     default=False,
 )
-def libcst(source, hide_default):
+@click.option(
+    "--hide-empty",
+    "hide_empty",
+    is_flag=True,
+    help="Hide fields that contain empty values ([], (), '').",
+    default=False,
+)
+def libcst(source, hide_default, hide_empty):
     """Display parse tree for a given source."""
-    show_tree(source, VisualizeLibCST({"hide_default": hide_default}))
+    show_tree(
+        source,
+        VisualizeLibCST({"hide_default": hide_default, "hide_empty": hide_empty}),
+    )
 
 
 if __name__ == "__main__":
