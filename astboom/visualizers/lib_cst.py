@@ -1,35 +1,34 @@
-import ast
+import inspect
 from collections import OrderedDict
 from itertools import chain
 
 from astboom.visualizers.base import BaseVisualizer
+import libcst as cst
+
 from astboom.visualizers.utils import class_name
 
 
-class VisualizeAST(BaseVisualizer):
+class VisualizeLibCST(BaseVisualizer):
     def _traverse(self, node):
         result = OrderedDict()
 
         simple_attrs, list_attrs, object_attrs = [], [], []
-        hide_pos = self.options.get("hide_pos", False)
-        hide_empty = self.options.get("hide_empty", False)
 
-        if hasattr(node, "lineno") and not hide_pos:
-            result[f"lineno: {node.lineno}"] = {}
-            result[f"col_offset: {node.col_offset}"] = {}
+        for attr, value in chain(simple_attrs, list_attrs, object_attrs):
+            result[attr] = value
 
-        for attr, value in sorted(node.__dict__.items(), key=lambda p: p[0]):
-            if attr in ("lineno", "col_offset"):
+        for attr, value in inspect.getmembers(node):
+            if attr.startswith("_"):
                 continue
 
-            if not value and hide_empty:
+            if callable(value):
                 continue
 
-            if isinstance(value, ast.AST):
+            if isinstance(value, cst.CSTNode):
                 object_attrs += [
                     (f"{attr}: {class_name(value)}", self._traverse(value))
                 ]
-            elif isinstance(value, list):
+            elif isinstance(value, (list, tuple)):
                 traversed_items = {
                     f"[{i}] {class_name(item)}": self._traverse(item)
                     for i, item in enumerate(value)
@@ -55,5 +54,5 @@ class VisualizeAST(BaseVisualizer):
         return result
 
     def process(self, source):
-        module = ast.parse(source)
+        module = cst.parse_module(source)
         return {class_name(module): self._traverse(module)}

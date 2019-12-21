@@ -6,6 +6,7 @@ from asciitree.drawing import BoxStyle, BOX_LIGHT
 
 from astboom.visualizers.ast import VisualizeAST
 from astboom.visualizers.cst import VisualizeCST
+from astboom.visualizers.lib_cst import VisualizeLibCST
 from astboom.visualizers.st import VisualizeST
 
 SOURCE_READ_PROMPT = (
@@ -71,6 +72,13 @@ def cst(source, show_prefix):
 def st(source):
     """Display parse tree for a given source."""
     show_tree(source, VisualizeST())
+
+
+@cli.command()
+@click.argument("source", nargs=1, required=False)
+def libcst(source):
+    """Display parse tree for a given source."""
+    show_tree(source, VisualizeLibCST())
 
 
 if __name__ == "__main__":
