@@ -39,14 +39,17 @@ class VisualizeLibCST(BaseVisualizer):
 
             if isinstance(value, cst.CSTNode):
                 object_attrs += [
-                    (f"{attr}: {class_name(value)}", self._traverse(value))
+                    (
+                        f"{attr}: libcst.{value.__class__.__name__}",
+                        self._traverse(value),
+                    )
                 ]
             elif isinstance(value, (list, tuple)):
                 if self.options["hide_fmt"]:
                     value = filter(lambda element: not is_fmt_node(element), value)
 
                 traversed_items = {
-                    f"[{i}] {class_name(item)}": self._traverse(item)
+                    f"[{i}] libcst.{item.__class__.__name__}": self._traverse(item)
                     for i, item in enumerate(value)
                 }
                 if traversed_items:
@@ -57,7 +60,9 @@ class VisualizeLibCST(BaseVisualizer):
                     list_attrs.insert(0, (f"{attr}: []", {}))
             elif isinstance(value, dict):
                 traversed_items = {
-                    f"[{key}] {class_name(value[key])}": self._traverse(value[key])
+                    f"[{key}] libcst.{value[key].__class__.__name__}": self._traverse(
+                        value[key]
+                    )
                     for key in value.keys()
                 }
                 list_attrs += [(attr, traversed_items)]
