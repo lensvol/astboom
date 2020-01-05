@@ -51,7 +51,7 @@ class VisualizeLibCST(BaseVisualizer):
                 }
                 if traversed_items:
                     list_attrs += [(attr, traversed_items)]
-                else:
+                elif not self.options["hide_empty"]:
                     # Moving empty lists to the beginning of the list
                     # helps to prevent breaking up visual consistency.
                     list_attrs.insert(0, (f"{attr}: []", {}))
