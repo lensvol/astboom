@@ -4,9 +4,13 @@
 ![GitHub](https://img.shields.io/github/license/lensvol/astboom)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Visualize Python AST/CST/ST in console using ASCII graphics.
+Visualize Python AST/CST/ST in console using ASCII graphics using various engines.
 
-AST is displayed as provided by standard `ast` module, CST is displayed as provided by `lib2to3`.
+Engines available:
+* **[ast](https://docs.python.org/3/library/ast.html)** module
+* **[parser](https://docs.python.org/3/library/parser.html)**  module
+* **lib2to3**
+* **[LibCST](https://github.com/Instagram/LibCST)**
 
 ## Example
 
@@ -17,6 +21,8 @@ AST is displayed as provided by standard `ast` module, CST is displayed as provi
 Simply provide a valid Python source code string as an argument
 and a corresponding AST/CST/ST will be displayed.
 
+### AST
+
 ```
 Usage: astboom ast [OPTIONS] [SOURCE]
 
@@ -25,8 +31,9 @@ Usage: astboom ast [OPTIONS] [SOURCE]
 Options:
   --no-pos      Hide 'col_offset' and 'lineno' fields.
   --hide-empty  Hide empty fields.
-  --help        Show this message and exit.
 ```
+
+### lib2to3 CST
 
 ```
 Usage: astboom cst [OPTIONS] [SOURCE]
@@ -35,27 +42,31 @@ Usage: astboom cst [OPTIONS] [SOURCE]
 
 Options:
   --show-prefix  Display value stored in 'prefix' field of the node.
-  --help         Show this message and exit.
 ```
+
+### Python parse tree
 
 ```
 Usage: astboom st [OPTIONS] [SOURCE]
 
-  Display parse tree for a given source.
+  Display Python parse tree for a given source.
 
-Options:
-  --help  Show this message and exit.
 ```
+
+### LibCST tree
 
 ```
 Usage: astboom libcst [OPTIONS] [SOURCE]
 
-  Display parse tree for a given source.
+  Display LibCST tree for a given source.
 
 Options:
-  --hide-default  Hide fields that contain default value
-                  (MaybeSentinel.DEFAULT).
-  --help          Show this message and exit.
+  --hide-default   Hide fields that contain default value
+                   (MaybeSentinel.DEFAULT).
+  --hide-empty     Hide fields that contain empty values ([], (), '').
+  --hide-fmt       Hide formatting-related fields and objects (whitespace,
+                   newlines).
+  --show-children  Show contents of the 'children' attribute.
 ```
 
 If no source provided as an argument, then tool will attempt to read it
@@ -71,7 +82,7 @@ from *STDIN*.
 
 ```shell script
 # git clone https://github.com/lensvol/astboom
-# poetry install --develop
+# poetry install
 ```
 
 ## License
