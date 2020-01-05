@@ -2,12 +2,15 @@ import inspect
 from collections import OrderedDict
 from itertools import chain
 
-from libcst import MaybeSentinel
+import libcst as cst
+from libcst import MaybeSentinel, TrailingWhitespace, SimpleWhitespace, Newline
 
 from astboom.visualizers.base import BaseVisualizer
-import libcst as cst
-
 from astboom.visualizers.utils import class_name
+
+
+def is_fmt_node(element):
+    return isinstance(element, (Newline, SimpleWhitespace, TrailingWhitespace))
 
 
 class VisualizeLibCST(BaseVisualizer):
@@ -31,11 +34,17 @@ class VisualizeLibCST(BaseVisualizer):
             ):
                 continue
 
+            if self.options["hide_fmt"] and "whitespace" in attr:
+                continue
+
             if isinstance(value, cst.CSTNode):
                 object_attrs += [
                     (f"{attr}: {class_name(value)}", self._traverse(value))
                 ]
             elif isinstance(value, (list, tuple)):
+                if self.options["hide_fmt"]:
+                    value = filter(lambda element: not is_fmt_node(element), value)
+
                 traversed_items = {
                     f"[{i}] {class_name(item)}": self._traverse(item)
                     for i, item in enumerate(value)

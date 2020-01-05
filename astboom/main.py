@@ -90,11 +90,24 @@ def st(source):
     help="Hide fields that contain empty values ([], (), '').",
     default=False,
 )
-def libcst(source, hide_default, hide_empty):
+@click.option(
+    "--hide-fmt",
+    "hide_fmt",
+    is_flag=True,
+    help="Hide formatting-related fields and objects (whitespace, newlines).",
+    default=False,
+)
+def libcst(source, hide_default, hide_empty, hide_fmt):
     """Display parse tree for a given source."""
     show_tree(
         source,
-        VisualizeLibCST({"hide_default": hide_default, "hide_empty": hide_empty}),
+        VisualizeLibCST(
+            {
+                "hide_default": hide_default,
+                "hide_empty": hide_empty,
+                "hide_fmt": hide_fmt,
+            }
+        ),
     )
 
 
