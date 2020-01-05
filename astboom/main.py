@@ -97,7 +97,14 @@ def st(source):
     help="Hide formatting-related fields and objects (whitespace, newlines).",
     default=False,
 )
-def libcst(source, hide_default, hide_empty, hide_fmt):
+@click.option(
+    "--show-children",
+    "show_children",
+    is_flag=True,
+    help="Show contents of the 'children' attribute.",
+    default=False,
+)
+def libcst(source, hide_default, hide_empty, hide_fmt, show_children):
     """Display parse tree for a given source."""
     show_tree(
         source,
@@ -106,6 +113,7 @@ def libcst(source, hide_default, hide_empty, hide_fmt):
                 "hide_default": hide_default,
                 "hide_empty": hide_empty,
                 "hide_fmt": hide_fmt,
+                "show_children": show_children,
             }
         ),
     )

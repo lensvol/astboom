@@ -29,6 +29,9 @@ class VisualizeLibCST(BaseVisualizer):
             if callable(value):
                 continue
 
+            if not self.options["show_children"] and attr == "children":
+                continue
+
             if self.options["hide_empty"] and (
                 value in [[], (), "", None] or attr == "empty"
             ):
@@ -79,4 +82,4 @@ class VisualizeLibCST(BaseVisualizer):
 
     def process(self, source):
         module = cst.parse_module(source)
-        return {class_name(module): self._traverse(module)}
+        return {f"libcst.{module.__class__.__name__}": self._traverse(module)}
