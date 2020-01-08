@@ -34,7 +34,7 @@ libcst = "^0.2.5"
 ipython = {version = "^7.8", optional = true}
 
 [tool.poetry.scripts]
-astboom = 'astboom.main:cli'
+astboom = 'astboom.cli:cli'
 
 [build-system]
 requires = ["poetry>=0.12"]
