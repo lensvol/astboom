@@ -16,7 +16,15 @@ SOURCE_READ_PROMPT = (
 box_tr = LeftAligned(draw=BoxStyle(gfx=BOX_LIGHT, horiz_len=1, indent=2))
 
 
-@click.group()
+class NaturalOrderGroup(click.Group):
+    # Copied this from
+    # https://github.com/pallets/click/issues/513#issuecomment-504158316
+
+    def list_commands(self, ctx):
+        return self.commands.keys()
+
+
+@click.group(cls=NaturalOrderGroup)
 def cli():
     pass
 
