@@ -70,7 +70,7 @@ def cst(source, show_prefix):
 @cli.command()
 @click.argument("source", nargs=1, required=False)
 def st(source):
-    """Display parse tree for a given source."""
+    """Display Python parse tree for a given source."""
     show_tree(source, VisualizeST())
 
 
@@ -105,7 +105,7 @@ def st(source):
     default=False,
 )
 def libcst(source, hide_default, hide_empty, hide_fmt, show_children):
-    """Display parse tree for a given source."""
+    """Display LibCST tree for a given source."""
     show_tree(
         source,
         VisualizeLibCST(
