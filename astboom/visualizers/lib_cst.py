@@ -36,9 +36,7 @@ class VisualizeLibCST(BaseVisualizer):
             ):
                 continue
 
-            if self.options["hide_fmt"] and (
-                "whitespace" in attr or attr in ("lpar", "rpar")
-            ):
+            if self.options["hide_fmt"] and "whitespace" in attr:
                 continue
 
             if isinstance(value, cst.CSTNode):
