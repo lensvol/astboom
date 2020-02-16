@@ -1,12 +1,11 @@
 import inspect
 from collections import OrderedDict
-from itertools import chain
 
 import libcst as cst
+from itertools import chain
 from libcst import MaybeSentinel, TrailingWhitespace, SimpleWhitespace, Newline
 
 from astboom.visualizers.base import BaseVisualizer
-from astboom.visualizers.utils import class_name
 
 
 def is_fmt_node(element):
@@ -37,7 +36,9 @@ class VisualizeLibCST(BaseVisualizer):
             ):
                 continue
 
-            if self.options["hide_fmt"] and "whitespace" in attr:
+            if self.options["hide_fmt"] and (
+                "whitespace" in attr or attr in ("lpar", "rpar")
+            ):
                 continue
 
             if isinstance(value, cst.CSTNode):
