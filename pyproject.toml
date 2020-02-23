@@ -33,6 +33,7 @@ pyyaml = "^5.3"
 
 [tool.poetry.dev-dependencies]
 ipython = {version = "^7.8", optional = true}
+ipdb = "^0.12.3"
 
 [tool.poetry.scripts]
 astboom = 'astboom.cli:cli'
