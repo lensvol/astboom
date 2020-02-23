@@ -10,6 +10,9 @@ class VisualizeAST(BaseVisualizer):
     def _traverse(self, node):
         result = OrderedDict()
 
+        if node is None:
+            return {"None": {}}
+
         simple_attrs, list_attrs, object_attrs = [], [], []
         hide_pos = self.options.get("hide_pos", False)
         hide_empty = self.options.get("hide_empty", False)
